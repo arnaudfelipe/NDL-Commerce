@@ -4,6 +4,7 @@ import com.ndlcommerce.useCase.interfaces.customer.CustomerInputBoundary;
 import com.ndlcommerce.useCase.request.customer.CustomerFilterDTO;
 import com.ndlcommerce.useCase.request.customer.CustomerRequestDTO;
 import com.ndlcommerce.useCase.request.customer.CustomerResponseDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @EnableMethodSecurity
 @RequestMapping("/customer")
+@Tag(name = "Clientes")
 public class CustomerController {
 
   private final CustomerInputBoundary customerInput;

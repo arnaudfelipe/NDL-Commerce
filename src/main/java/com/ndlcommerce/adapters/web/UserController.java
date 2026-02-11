@@ -5,6 +5,7 @@ import com.ndlcommerce.useCase.request.user.UpdateUserDTO;
 import com.ndlcommerce.useCase.request.user.UserFilterDTO;
 import com.ndlcommerce.useCase.request.user.UserRequestDTO;
 import com.ndlcommerce.useCase.request.user.UserResponseDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @EnableMethodSecurity
 @RequestMapping("/users")
+@Tag(name = "Usuário")
 public class UserController {
 
   private final UserInputBoundary userInput;
