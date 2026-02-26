@@ -1,7 +1,6 @@
 package com.ndlcommerce.entity.model.implementation;
 
 import com.ndlcommerce.entity.model.interfaces.Customer;
-
 import java.util.UUID;
 
 public class CommonCustomer implements Customer {

@@ -6,9 +6,8 @@ import com.ndlcommerce.entity.model.interfaces.Category;
 
 public class CommonCategoryFactoryImp implements CategoryFactory {
 
-    @Override
-    public Category create(String name) {
-        return new CommonCategory(name);
-    }
-
+  @Override
+  public Category create(String name, String description) {
+    return new CommonCategory(name, description);
+  }
 }

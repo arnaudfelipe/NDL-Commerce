@@ -2,8 +2,11 @@ package com.ndlcommerce.entity.model.interfaces;
 
 public interface Category {
 
-    String getName();
+  String getName();
 
-    boolean nameIsValid();
+  String getDescription();
 
+  boolean nameIsValid();
+
+  boolean descriptionIsValid();
 }
