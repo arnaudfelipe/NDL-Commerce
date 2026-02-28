@@ -30,10 +30,11 @@ public class CategoryResponseFormatter implements CategoryPresenter {
   @Override
   public CategoryResponseDTO prepareSuccessView(CategoryResponseDTO response) {
 
-    LocalDateTime date = LocalDateTime.parse(response.getCreatedAt());
+    if (response != null) {
+      LocalDateTime date = LocalDateTime.parse(response.getCreatedAt());
 
-    response.setCreatedAt(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
-
+      response.setCreatedAt(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+    }
     return response;
   }
 

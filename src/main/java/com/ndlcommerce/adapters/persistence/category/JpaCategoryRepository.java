@@ -7,5 +7,7 @@ public interface JpaCategoryRepository extends JpaRepository<CategoryDataMapper,
 
   boolean existsByNameAndActiveTrue(String name);
 
-  boolean existsByNameAndIdNot(String name, UUID uuid);
+  boolean existsByNameAndIdNotAndActiveTrue(String name, UUID uuid);
+
+  boolean existsByIdAndActiveTrue(UUID parentId);
 }

@@ -20,4 +20,6 @@ public interface CategoryRegisterDsGateway {
   boolean existsByNameAndNotId(String name, UUID uuid);
 
   CategoryDataMapper update(UUID categoryUUID, CategoryDbRequestDTO categoryDbRequestDTO);
+
+  void delete(UUID categoryId);
 }

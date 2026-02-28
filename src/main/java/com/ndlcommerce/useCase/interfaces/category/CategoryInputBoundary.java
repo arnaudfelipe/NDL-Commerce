@@ -14,4 +14,6 @@ public interface CategoryInputBoundary {
   CategoryResponseDTO getById(UUID uuid);
 
   CategoryResponseDTO updateCategory(UUID uuid, CategoryRequestDTO requestModel);
+
+  Object deleteCategory(UUID categoryId);
 }

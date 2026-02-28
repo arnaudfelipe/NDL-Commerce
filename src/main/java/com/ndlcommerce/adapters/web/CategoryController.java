@@ -50,16 +50,23 @@ public class CategoryController {
   }
 
   @GetMapping("{id}")
-  public ResponseEntity<?> getById(@PathVariable("id") String id) {
-    var result = categoryInputBoundary.getById(UUID.fromString(id));
+  public ResponseEntity<?> getById(@PathVariable("id") String categoryId) {
+    var result = categoryInputBoundary.getById(UUID.fromString(categoryId));
     return ResponseEntity.ok().body(result);
   }
 
   @PutMapping("{id}")
   @PreAuthorize("hasAnyRole('ADMIN')")
   public ResponseEntity<?> update(
-      @PathVariable("id") String id, @RequestBody CategoryRequestDTO requestModel) {
-    var result = categoryInputBoundary.updateCategory(UUID.fromString(id), requestModel);
+      @PathVariable("id") String categoryId, @RequestBody CategoryRequestDTO requestModel) {
+    var result = categoryInputBoundary.updateCategory(UUID.fromString(categoryId), requestModel);
+    return ResponseEntity.ok().body(result);
+  }
+
+  @DeleteMapping("{id}")
+  @PreAuthorize("hasAnyRole('ADMIN')")
+  public ResponseEntity<?> delete(@PathVariable("id") String categoryId) {
+    var result = categoryInputBoundary.deleteCategory(UUID.fromString(categoryId));
     return ResponseEntity.ok().body(result);
   }
 }

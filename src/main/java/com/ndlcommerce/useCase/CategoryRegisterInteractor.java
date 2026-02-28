@@ -118,6 +118,19 @@ public class CategoryRegisterInteractor implements CategoryInputBoundary {
     return categoryPresenter.prepareSuccessView(responseDTO);
   }
 
+  @Override
+  public Object deleteCategory(UUID categoryId) {
+    Optional<CategoryDataMapper> opt = categoryDsGateway.getById(categoryId);
+
+    if (opt.isEmpty()) {
+      return categoryPresenter.prepareFailView("NotFound");
+    }
+
+    categoryDsGateway.delete(categoryId);
+
+    return categoryPresenter.prepareSuccessView(null);
+  }
+
   private CategoryResponseDTO mapperToDTO(CategoryDataMapper mapper) {
     return new CategoryResponseDTO(
         mapper.getId(), mapper.getName(), mapper.getParentId(), mapper.getCreatedAt().toString());

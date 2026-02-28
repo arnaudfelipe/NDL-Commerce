@@ -35,7 +35,7 @@ public class JpaCategory implements CategoryRegisterDsGateway {
 
   @Override
   public boolean existsById(UUID parentId) {
-    return repository.existsById(parentId);
+    return repository.existsByIdAndActiveTrue(parentId);
   }
 
   @Override
@@ -49,7 +49,7 @@ public class JpaCategory implements CategoryRegisterDsGateway {
         ExampleMatcher.matching()
             .withIgnoreCase()
             .withIgnoreNullValues()
-            .withIgnorePaths("id", "active", "createdBy", "createdAt", "updatedBy", "updatedAt")
+            .withIgnorePaths("id", "createdBy", "createdAt", "updatedBy", "updatedAt")
             .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
     Example<CategoryDataMapper> example = Example.of(dataMapper, matcher);
@@ -78,7 +78,7 @@ public class JpaCategory implements CategoryRegisterDsGateway {
 
   @Override
   public boolean existsByNameAndNotId(String name, UUID uuid) {
-    return repository.existsByNameAndIdNot(name, uuid);
+    return repository.existsByNameAndIdNotAndActiveTrue(name, uuid);
   }
 
   @Override
@@ -104,5 +104,24 @@ public class JpaCategory implements CategoryRegisterDsGateway {
     categoryDataMapper.setUpdatedBy(userLogado.getId());
 
     return repository.save(categoryDataMapper);
+  }
+
+  @Override
+  public void delete(UUID categoryId) {
+
+    Optional<CategoryDataMapper> categoryOptional = repository.findById(categoryId);
+
+    if (categoryOptional.isEmpty()) {
+      return;
+    }
+
+    CategoryDataMapper categoryDataMapper = categoryOptional.get();
+
+    UserDataMapper userLogado = securityFilter.obterUsuarioLogado();
+
+    categoryDataMapper.setUpdatedBy(userLogado.getId());
+    categoryDataMapper.setActive(false);
+
+    repository.save(categoryDataMapper);
   }
 }
