@@ -9,8 +9,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity

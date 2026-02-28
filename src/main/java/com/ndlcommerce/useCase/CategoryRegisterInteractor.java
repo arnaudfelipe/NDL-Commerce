@@ -28,17 +28,14 @@ public class CategoryRegisterInteractor implements CategoryInputBoundary {
   @Override
   public CategoryResponseDTO create(CategoryRequestDTO requestDTO) {
 
-    Category category = categoryFactory.create(requestDTO.getName(), requestDTO.getDescription());
+    Category category = categoryFactory.create(requestDTO.getName());
 
     if (!category.nameIsValid()) {
       return categoryPresenter.prepareFailView("NameNotValid");
     }
 
-    if (!category.descriptionIsValid()) {
-      return categoryPresenter.prepareFailView("DescriptionNotValid");
-    }
 
-    if (categoryDsGateway.existsByName(category.getName())) {
+    if (categoryDsGateway.existsByName(category.name())) {
       return categoryPresenter.prepareFailView("ExistByName");
     }
 
@@ -49,7 +46,7 @@ public class CategoryRegisterInteractor implements CategoryInputBoundary {
 
     CategoryDbRequestDTO dbRequest =
         new CategoryDbRequestDTO(
-            category.getName(), category.getDescription(), requestDTO.getParentId());
+            category.name(), requestDTO.getParentId());
 
     CategoryDataMapper saved = categoryDsGateway.save(dbRequest);
 

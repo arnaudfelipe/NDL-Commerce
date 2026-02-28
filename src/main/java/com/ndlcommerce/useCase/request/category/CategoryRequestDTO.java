@@ -6,12 +6,10 @@ public class CategoryRequestDTO {
 
   private String name;
 
-  private String description;
   private UUID parentId;
 
-  public CategoryRequestDTO(String name, String description, UUID parentId) {
+  public CategoryRequestDTO(String name, UUID parentId) {
     this.name = name;
-    this.description = description;
     this.parentId = parentId;
   }
 
@@ -23,7 +21,4 @@ public class CategoryRequestDTO {
     return parentId;
   }
 
-  public String getDescription() {
-    return description;
-  }
 }
