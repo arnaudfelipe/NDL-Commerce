@@ -1,7 +1,9 @@
 package com.ndlcommerce.useCase.interfaces.category;
 
 import com.ndlcommerce.adapters.persistence.category.CategoryDataMapper;
+import com.ndlcommerce.config.PaginatedResult;
 import com.ndlcommerce.useCase.request.category.CategoryDbRequestDTO;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface CategoryRegisterDsGateway {
@@ -10,4 +12,8 @@ public interface CategoryRegisterDsGateway {
   CategoryDataMapper save(CategoryDbRequestDTO dbRequest);
 
   boolean existsById(UUID parentId);
+
+  PaginatedResult<CategoryDataMapper> list(CategoryDbRequestDTO request, int page, int size);
+
+  Optional<CategoryDataMapper> getById(UUID uuid);
 }

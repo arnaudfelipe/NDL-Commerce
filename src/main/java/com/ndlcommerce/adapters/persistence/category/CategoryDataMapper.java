@@ -51,4 +51,10 @@ public class CategoryDataMapper {
     this.createdBy = createdBy;
     this.active = true;
   }
+
+  public CategoryDataMapper(String name, UUID parentId) {
+    this.name = name;
+    this.parentId = parentId;
+    this.active = true;
+  }
 }

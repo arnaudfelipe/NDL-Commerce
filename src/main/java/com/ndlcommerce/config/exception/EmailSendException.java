@@ -1,4 +1,4 @@
-package com.ndlcommerce.exception;
+package com.ndlcommerce.config.exception;
 
 public class EmailSendException extends RuntimeException {
 

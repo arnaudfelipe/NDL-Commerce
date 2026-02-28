@@ -1,4 +1,4 @@
-package com.ndlcommerce.exception;
+package com.ndlcommerce.config.exception;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
@@ -93,7 +93,8 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(NoSuchElementException.class)
   public ErrorResponseDTO handleNoSuchElementException(NoSuchElementException e) {
     System.err.println(e.getMessage());
-    return ErrorResponseDTO.notFound(e.getMessage().isEmpty() ?  "Elemento com id fornecido não encontrado": e.getMessage());
+    return ErrorResponseDTO.notFound(
+        e.getMessage().isEmpty() ? "Elemento com id fornecido não encontrado" : e.getMessage());
   }
 
   @ResponseStatus(HttpStatus.FORBIDDEN)

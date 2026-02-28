@@ -1,38 +1,16 @@
 package com.ndlcommerce.useCase.request.user;
 
 import com.ndlcommerce.entity.enums.UserType;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class UserFilterDTO {
 
   String login;
   String email;
   UserType type;
-
-  public String getLogin() {
-    return login;
-  }
-
-  public void setLogin(String login) {
-    this.login = login;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public UserType getType() {
-    return type;
-  }
-
-  public void setType(UserType type) {
-    this.type = type;
-  }
-
-  public UserFilterDTO() {}
 
   public UserFilterDTO(String login, String email, String type) {
     this.login = login;

@@ -1,7 +1,8 @@
 package com.ndlcommerce.adapters.persistence.category;
 
-import com.ndlcommerce.exception.BusinessException;
-import com.ndlcommerce.exception.EntityAlreadyExistsException;
+import com.ndlcommerce.config.PaginatedResult;
+import com.ndlcommerce.config.exception.BusinessException;
+import com.ndlcommerce.config.exception.EntityAlreadyExistsException;
 import com.ndlcommerce.useCase.interfaces.category.CategoryPresenter;
 import com.ndlcommerce.useCase.request.category.CategoryResponseDTO;
 import java.time.LocalDateTime;
@@ -21,6 +22,8 @@ public class CategoryResponseFormatter implements CategoryPresenter {
               "Descrição da categoria não é válida, Descrição deve ter no mínimo 3 e no max 200 caracteres"),
           "ExistByName",
           new EntityAlreadyExistsException("Categoria já cadastrada"),
+          "NotFound",
+          new NoSuchElementException(),
           "ParentNotFound",
           new NoSuchElementException("Categoria pai não encontrada"));
 
@@ -32,6 +35,24 @@ public class CategoryResponseFormatter implements CategoryPresenter {
     response.setCreatedAt(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
 
     return response;
+  }
+
+  @Override
+  public PaginatedResult<CategoryResponseDTO> prepareListSuccessView(
+      PaginatedResult<CategoryResponseDTO> list) {
+    if (list != null) {
+      list.getContent()
+          .forEach(
+              categoryResponseDTO -> {
+                LocalDateTime date = LocalDateTime.parse(categoryResponseDTO.getCreatedAt());
+
+                categoryResponseDTO.setCreatedAt(
+                    date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+              });
+      return list;
+    }
+
+    return new PaginatedResult<CategoryResponseDTO>(null, 0, 0, 0, 0, false, false);
   }
 
   @Override

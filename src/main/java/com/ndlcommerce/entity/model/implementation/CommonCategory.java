@@ -7,9 +7,8 @@ public record CommonCategory(String name) implements Category {
   @Override
   public boolean nameIsValid() {
     return this.name != null
-            && !this.name.isBlank()
-            && this.name.length() >= 3
-            && this.name.length() < 50;
+        && !this.name.isBlank()
+        && this.name.length() >= 3
+        && this.name.length() < 50;
   }
-
 }

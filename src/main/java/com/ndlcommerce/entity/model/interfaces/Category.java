@@ -4,7 +4,5 @@ public interface Category {
 
   String name();
 
-
   boolean nameIsValid();
-
 }

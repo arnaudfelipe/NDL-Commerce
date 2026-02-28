@@ -20,5 +20,4 @@ public class CategoryRequestDTO {
   public UUID getParentId() {
     return parentId;
   }
-
 }

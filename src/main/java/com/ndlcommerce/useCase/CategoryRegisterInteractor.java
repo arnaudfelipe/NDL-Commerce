@@ -1,14 +1,18 @@
 package com.ndlcommerce.useCase;
 
 import com.ndlcommerce.adapters.persistence.category.CategoryDataMapper;
+import com.ndlcommerce.config.PaginatedResult;
 import com.ndlcommerce.entity.factory.interfaces.CategoryFactory;
 import com.ndlcommerce.entity.model.interfaces.Category;
 import com.ndlcommerce.useCase.interfaces.category.CategoryInputBoundary;
 import com.ndlcommerce.useCase.interfaces.category.CategoryPresenter;
 import com.ndlcommerce.useCase.interfaces.category.CategoryRegisterDsGateway;
 import com.ndlcommerce.useCase.request.category.CategoryDbRequestDTO;
+import com.ndlcommerce.useCase.request.category.CategoryFilterDTO;
 import com.ndlcommerce.useCase.request.category.CategoryRequestDTO;
 import com.ndlcommerce.useCase.request.category.CategoryResponseDTO;
+import java.util.Optional;
+import java.util.UUID;
 
 public class CategoryRegisterInteractor implements CategoryInputBoundary {
 
@@ -34,7 +38,6 @@ public class CategoryRegisterInteractor implements CategoryInputBoundary {
       return categoryPresenter.prepareFailView("NameNotValid");
     }
 
-
     if (categoryDsGateway.existsByName(category.name())) {
       return categoryPresenter.prepareFailView("ExistByName");
     }
@@ -45,8 +48,7 @@ public class CategoryRegisterInteractor implements CategoryInputBoundary {
     }
 
     CategoryDbRequestDTO dbRequest =
-        new CategoryDbRequestDTO(
-            category.name(), requestDTO.getParentId());
+        new CategoryDbRequestDTO(category.name(), requestDTO.getParentId());
 
     CategoryDataMapper saved = categoryDsGateway.save(dbRequest);
 
@@ -55,5 +57,42 @@ public class CategoryRegisterInteractor implements CategoryInputBoundary {
             saved.getId(), saved.getName(), saved.getParentId(), saved.getCreatedAt().toString());
 
     return categoryPresenter.prepareSuccessView(response);
+  }
+
+  @Override
+  public PaginatedResult<?> list(CategoryFilterDTO filter, int page, int size) {
+    CategoryDbRequestDTO request =
+        new CategoryDbRequestDTO(
+            filter != null ? filter.getName() : null, filter != null ? filter.getParentId() : null);
+
+    PaginatedResult<CategoryDataMapper> categoryDataMapperPage =
+        categoryDsGateway.list(request, page, size);
+
+    PaginatedResult<CategoryResponseDTO> paginatedResultCategoryResponseDTO =
+        categoryDataMapperPage == null ? null : categoryDataMapperPage.map(this::mapperToDTO);
+
+    return categoryPresenter.prepareListSuccessView(paginatedResultCategoryResponseDTO);
+  }
+
+  @Override
+  public CategoryResponseDTO getById(UUID uuid) {
+
+    Optional<CategoryDataMapper> optionalCategoryDataMapper = categoryDsGateway.getById(uuid);
+    if (optionalCategoryDataMapper.isEmpty()) {
+      return categoryPresenter.prepareFailView("NotFound");
+    }
+    CategoryDataMapper categoryDataMapper = optionalCategoryDataMapper.get();
+    CategoryResponseDTO responseDTO =
+        new CategoryResponseDTO(
+            categoryDataMapper.getId(),
+            categoryDataMapper.getName(),
+            categoryDataMapper.getParentId(),
+            categoryDataMapper.getCreatedAt().toString());
+    return categoryPresenter.prepareSuccessView(responseDTO);
+  }
+
+  private CategoryResponseDTO mapperToDTO(CategoryDataMapper mapper) {
+    return new CategoryResponseDTO(
+        mapper.getId(), mapper.getName(), mapper.getParentId(), mapper.getCreatedAt().toString());
   }
 }
