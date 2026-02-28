@@ -16,4 +16,8 @@ public interface CategoryRegisterDsGateway {
   PaginatedResult<CategoryDataMapper> list(CategoryDbRequestDTO request, int page, int size);
 
   Optional<CategoryDataMapper> getById(UUID uuid);
+
+  boolean existsByNameAndNotId(String name, UUID uuid);
+
+  CategoryDataMapper update(UUID categoryUUID, CategoryDbRequestDTO categoryDbRequestDTO);
 }

@@ -54,4 +54,12 @@ public class CategoryController {
     var result = categoryInputBoundary.getById(UUID.fromString(id));
     return ResponseEntity.ok().body(result);
   }
+
+  @PutMapping("{id}")
+  @PreAuthorize("hasAnyRole('ADMIN')")
+  public ResponseEntity<?> update(
+      @PathVariable("id") String id, @RequestBody CategoryRequestDTO requestModel) {
+    var result = categoryInputBoundary.updateCategory(UUID.fromString(id), requestModel);
+    return ResponseEntity.ok().body(result);
+  }
 }

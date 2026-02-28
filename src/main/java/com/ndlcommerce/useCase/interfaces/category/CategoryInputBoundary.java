@@ -12,4 +12,6 @@ public interface CategoryInputBoundary {
   PaginatedResult<?> list(CategoryFilterDTO filter, int page, int size);
 
   CategoryResponseDTO getById(UUID uuid);
+
+  CategoryResponseDTO updateCategory(UUID uuid, CategoryRequestDTO requestModel);
 }

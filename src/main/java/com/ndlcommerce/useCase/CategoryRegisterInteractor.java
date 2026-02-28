@@ -38,7 +38,7 @@ public class CategoryRegisterInteractor implements CategoryInputBoundary {
       return categoryPresenter.prepareFailView("NameNotValid");
     }
 
-    if (categoryDsGateway.existsByName(category.name())) {
+    if (categoryDsGateway.existsByName(category.getName())) {
       return categoryPresenter.prepareFailView("ExistByName");
     }
 
@@ -48,7 +48,7 @@ public class CategoryRegisterInteractor implements CategoryInputBoundary {
     }
 
     CategoryDbRequestDTO dbRequest =
-        new CategoryDbRequestDTO(category.name(), requestDTO.getParentId());
+        new CategoryDbRequestDTO(category.getName(), requestDTO.getParentId());
 
     CategoryDataMapper saved = categoryDsGateway.save(dbRequest);
 
@@ -88,6 +88,33 @@ public class CategoryRegisterInteractor implements CategoryInputBoundary {
             categoryDataMapper.getName(),
             categoryDataMapper.getParentId(),
             categoryDataMapper.getCreatedAt().toString());
+    return categoryPresenter.prepareSuccessView(responseDTO);
+  }
+
+  @Override
+  public CategoryResponseDTO updateCategory(UUID categoryId, CategoryRequestDTO requestDTO) {
+    Optional<CategoryDataMapper> opt = categoryDsGateway.getById(categoryId);
+
+    if (opt.isEmpty()) {
+      return categoryPresenter.prepareFailView("NotFound");
+    }
+
+    if (categoryDsGateway.existsByNameAndNotId(requestDTO.getName(), categoryId)) {
+      return categoryPresenter.prepareFailView("ExistByName");
+    }
+
+    Category category = categoryFactory.create(requestDTO.getName());
+
+    if (!category.nameIsValid()) {
+      return categoryPresenter.prepareFailView("NameNotValid");
+    }
+
+    CategoryDbRequestDTO categoryDbRequestDTO =
+        new CategoryDbRequestDTO(category.getName(), requestDTO.getParentId());
+    CategoryDataMapper updated = categoryDsGateway.update(categoryId, categoryDbRequestDTO);
+
+    CategoryResponseDTO responseDTO = mapperToDTO(updated);
+
     return categoryPresenter.prepareSuccessView(responseDTO);
   }
 

@@ -5,6 +5,11 @@ import com.ndlcommerce.entity.model.interfaces.Category;
 public record CommonCategory(String name) implements Category {
 
   @Override
+  public String getName() {
+    return this.name;
+  }
+
+  @Override
   public boolean nameIsValid() {
     return this.name != null
         && !this.name.isBlank()

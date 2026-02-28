@@ -75,4 +75,34 @@ public class JpaCategory implements CategoryRegisterDsGateway {
   public Optional<CategoryDataMapper> getById(UUID uuid) {
     return repository.findById(uuid);
   }
+
+  @Override
+  public boolean existsByNameAndNotId(String name, UUID uuid) {
+    return repository.existsByNameAndIdNot(name, uuid);
+  }
+
+  @Override
+  public CategoryDataMapper update(UUID categoryUUID, CategoryDbRequestDTO categoryDbRequestDTO) {
+    Optional<CategoryDataMapper> categoryOptional = repository.findById(categoryUUID);
+
+    if (categoryOptional.isEmpty()) {
+      return null;
+    }
+
+    CategoryDataMapper categoryDataMapper = categoryOptional.get();
+
+    UserDataMapper userLogado = securityFilter.obterUsuarioLogado();
+
+    categoryDataMapper.setName(
+        categoryDbRequestDTO.getName().isEmpty()
+            ? categoryDataMapper.getName()
+            : categoryDbRequestDTO.getName());
+    categoryDataMapper.setParentId(
+        categoryDbRequestDTO.getParentId() == null
+            ? categoryDataMapper.getParentId()
+            : categoryDbRequestDTO.getParentId());
+    categoryDataMapper.setUpdatedBy(userLogado.getId());
+
+    return repository.save(categoryDataMapper);
+  }
 }

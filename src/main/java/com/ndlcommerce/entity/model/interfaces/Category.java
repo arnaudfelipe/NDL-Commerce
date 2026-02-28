@@ -2,7 +2,7 @@ package com.ndlcommerce.entity.model.interfaces;
 
 public interface Category {
 
-  String name();
+  String getName();
 
   boolean nameIsValid();
 }
