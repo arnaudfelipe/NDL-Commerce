@@ -2,6 +2,7 @@ package com.ndlcommerce.adapters.web;
 
 import com.ndlcommerce.useCase.interfaces.product.ProductInputBoundary;
 import com.ndlcommerce.useCase.request.product.ProductRequestDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @EnableMethodSecurity
 @RequestMapping("/product")
+@Tag(name = "Produto")
 public class ProductController {
 
   private final ProductInputBoundary productInputBoundary;

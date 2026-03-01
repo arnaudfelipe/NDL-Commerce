@@ -1,6 +1,6 @@
 package com.ndlcommerce.config;
 
-import com.ndlcommerce.exception.EmailSendException;
+import com.ndlcommerce.config.exception.EmailSendException;
 import com.sendgrid.*;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;

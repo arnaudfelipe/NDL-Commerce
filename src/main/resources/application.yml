@@ -36,7 +36,9 @@ spring:
     validate-on-migrate: true
   sendgrid:
     api-key: ${SENDGRID_TOKEN:testetoken0101010101}
-
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
 
   springdoc:
     override-with-generic-response: false

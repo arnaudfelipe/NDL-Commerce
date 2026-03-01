@@ -6,9 +6,9 @@ import static org.mockito.Mockito.*;
 import com.ndlcommerce.adapters.persistence.user.UserDataMapper;
 import com.ndlcommerce.config.EmailService;
 import com.ndlcommerce.entity.enums.UserType;
-import com.ndlcommerce.entity.factory.UserFactory;
-import com.ndlcommerce.entity.model.CommonUser;
-import com.ndlcommerce.entity.model.User;
+import com.ndlcommerce.entity.factory.interfaces.UserFactory;
+import com.ndlcommerce.entity.model.implementation.CommonUser;
+import com.ndlcommerce.entity.model.interfaces.User;
 import com.ndlcommerce.useCase.interfaces.emailValidation.EmailValidationDsGateway;
 import com.ndlcommerce.useCase.interfaces.user.UserPresenter;
 import com.ndlcommerce.useCase.interfaces.user.UserRegisterDsGateway;
@@ -68,5 +68,30 @@ public class UserRegisterInteractorTests {
 
     verify(userDsGateway, times(1)).save(any(UserDbRequestDTO.class));
     verify(userPresenter, times(1)).prepareSuccessView(any(UserResponseDTO.class));
+  }
+
+  @Test
+  void givenExistingEmail_whenCreate_thenReturnFailView() {
+    User user = new CommonUser("baeldung", "baeldung", UserType.COMMON, "Senha1234");
+
+    UserRequestDTO userRequestDTO =
+        new UserRequestDTO(user.getLogin(), user.getType(), user.getEmail(), user.getPassword());
+
+    UserDataMapper fakeSavedUser =
+        new UserDataMapper(
+            user.getLogin(),
+            user.getEmail(),
+            user.getType(),
+            user.getPassword(),
+            UUID.randomUUID());
+
+    when(userDsGateway.existsByLogin(anyString())).thenReturn(false);
+    when(userDsGateway.existsByEmail(anyString())).thenReturn(true);
+
+    interactor.create(userRequestDTO);
+
+    verify(userPresenter, times(1)).prepareFailView(anyString());
+    verify(userDsGateway, times(0)).save(any(UserDbRequestDTO.class));
+    verify(userPresenter, times(0)).prepareSuccessView(any(UserResponseDTO.class));
   }
 }

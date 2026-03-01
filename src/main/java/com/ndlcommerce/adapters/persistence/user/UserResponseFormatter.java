@@ -1,7 +1,7 @@
 package com.ndlcommerce.adapters.persistence.user;
 
-import com.ndlcommerce.exception.BusinessException;
-import com.ndlcommerce.exception.EntityAlreadyExistsException;
+import com.ndlcommerce.config.exception.BusinessException;
+import com.ndlcommerce.config.exception.EntityAlreadyExistsException;
 import com.ndlcommerce.useCase.interfaces.user.UserPresenter;
 import com.ndlcommerce.useCase.request.user.UserResponseDTO;
 import java.time.LocalDateTime;
