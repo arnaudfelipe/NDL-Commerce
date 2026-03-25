@@ -41,6 +41,13 @@ public class ProductResponseFormatter implements ProductPresenter {
 
   @Override
   public List<ProductResponseDTO> prepareListSuccessView(List<ProductResponseDTO> list) {
-    return list;
+      list.forEach(
+              customer -> {
+                  LocalDateTime customerDateTime = LocalDateTime.parse(customer.getCreatedAt());
+                  customer.setCreatedAt(
+                          customerDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+              });
+
+      return list;
   }
 }

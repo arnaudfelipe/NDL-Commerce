@@ -28,7 +28,13 @@ public class JpaProduct implements ProductRegisterDsGateway {
   @Override
   public List<ProductDataMapper> list(ProductDbRequestDTO requestDTO, Integer page, Integer size) {
 
-    return null;
+      return repository.search(
+              requestDTO.getName(),
+              requestDTO.getDescription(),
+              requestDTO.getBrand(),
+              true,
+              page,
+              size);
   }
 
   @Override
@@ -40,7 +46,7 @@ public class JpaProduct implements ProductRegisterDsGateway {
         new ProductDataMapper(
             requestDTO.getName(), requestDTO.getDescription(), userLogado.getId());
 
-    entity.setUpdatedBy(userLogado.getId());
+    entity.setCreatedBy(userLogado.getId());
 
     return repository.save(entity);
   }

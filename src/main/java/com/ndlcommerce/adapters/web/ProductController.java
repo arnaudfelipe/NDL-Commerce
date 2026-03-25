@@ -1,6 +1,8 @@
 package com.ndlcommerce.adapters.web;
 
 import com.ndlcommerce.useCase.interfaces.product.ProductInputBoundary;
+import com.ndlcommerce.useCase.request.customer.CustomerFilterDTO;
+import com.ndlcommerce.useCase.request.product.ProductFilterDTO;
 import com.ndlcommerce.useCase.request.product.ProductRequestDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -9,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @EnableMethodSecurity
@@ -29,4 +33,34 @@ public class ProductController {
     var productCreated = productInputBoundary.create(requestModel);
     return ResponseEntity.ok().body(productCreated);
   }
+
+    @GetMapping
+    public ResponseEntity<?> listProducts(
+            @RequestBody(required = false) ProductFilterDTO filter,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size) {
+        var result = productInputBoundary.list(filter, page, size);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<?> getById(@PathVariable("id") String productId) {
+        var result = productInputBoundary.getById(UUID.fromString(productId));
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PutMapping("{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<?> update(
+            @PathVariable("id") String productId, @RequestBody ProductRequestDTO requestModel) {
+        var result = productInputBoundary.updateProduct(UUID.fromString(productId), requestModel);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<?> delete(@PathVariable("id") String productId) {
+        var result = productInputBoundary.deleteProduct(UUID.fromString(productId));
+        return ResponseEntity.ok().body(result);
+    }
 }

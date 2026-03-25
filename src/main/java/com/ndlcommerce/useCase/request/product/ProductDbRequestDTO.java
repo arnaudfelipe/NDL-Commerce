@@ -7,10 +7,20 @@ public class ProductDbRequestDTO {
 
   @Getter private String name;
   @Getter private String description;
+  @Getter private String brand;
+  @Getter private boolean active;
 
-  public ProductDbRequestDTO(String name, String description) {
+    public ProductDbRequestDTO(String brand, String description, String name) {
+        this.brand = brand;
+        this.description = description;
+        this.name = name;
+    }
+
+    public ProductDbRequestDTO(String name, String description, String brand, boolean active) {
     this.name = name;
     this.description = description;
+      this.brand = brand;
+      this.active = active;
   }
 
   @Override
@@ -24,4 +34,6 @@ public class ProductDbRequestDTO {
   public int hashCode() {
     return Objects.hash(name, description);
   }
+
+
 }
