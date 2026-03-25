@@ -38,6 +38,12 @@ public class ProductDataMapper {
   @Column(name = "updated_by")
   private UUID updatedBy;
 
+    @Column(name = "brand_id")
+    private UUID brandId;
+
+    @Column(name = "category_id")
+    private UUID categoryId;
+
   @UpdateTimestamp
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;

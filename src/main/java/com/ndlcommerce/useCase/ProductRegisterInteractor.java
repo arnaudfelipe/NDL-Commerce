@@ -42,7 +42,9 @@ public class ProductRegisterInteractor implements ProductInputBoundary {
     }
 
     ProductDbRequestDTO dbRequest =
-        new ProductDbRequestDTO(product.getName(), product.getDescription());
+        new ProductDbRequestDTO(product.getName(), product.getDescription(),
+                null,//TODO: necessário colocar a marca aqui depois de terminar o CRUD da mesma.
+                true);
 
     ProductDataMapper save = productDsGateway.save(dbRequest);
 
@@ -55,7 +57,24 @@ public class ProductRegisterInteractor implements ProductInputBoundary {
 
   @Override
   public List<?> list(ProductFilterDTO filter, int page, int size) {
-    return List.of();
+      // list method should only return active products.
+      ProductDbRequestDTO productDbRequestDTO = new ProductDbRequestDTO(
+              filter.getName(),
+              filter.getDescription(),
+              filter.getBrandName()
+      );
+
+      List<ProductDataMapper> productDataMapperList = productDsGateway.list(productDbRequestDTO, page, size);
+
+      List<ProductResponseDTO> productResponseDTOlist = productDataMapperList.stream().map(productDataMapper ->
+              new ProductResponseDTO(
+                      productDataMapper.getId(),
+                      productDataMapper.getName(),
+                      productDataMapper.getDescription(),
+                      productDataMapper.getCreatedAt().toString()
+              )).toList();
+
+      return productPresenter.prepareListSuccessView(productResponseDTOlist);
   }
 
   @Override
