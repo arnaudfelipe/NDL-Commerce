@@ -1,3 +1,13 @@
 package com.ndlcommerce.useCase.request.product;
 
-public class ProductFilterDTO {}
+import lombok.Data;
+
+@Data
+public class ProductFilterDTO {
+
+    private String name;
+    private String description;
+    private String brandName;
+
+
+}
