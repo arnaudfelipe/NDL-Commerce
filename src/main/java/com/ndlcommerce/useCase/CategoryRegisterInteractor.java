@@ -61,7 +61,7 @@ public class CategoryRegisterInteractor implements CategoryInputBoundary {
 
   @Override
   public PaginatedResult<?> list(CategoryFilterDTO filter, int page, int size) {
-//      TODO: aqui não é necessário filtro, tudo que eu preciso para pesquysia ja vem no DTO
+    //      TODO: aqui não é necessário filtro, tudo que eu preciso para pesquysia ja vem no DTO
     CategoryDbRequestDTO request =
         new CategoryDbRequestDTO(
             filter != null ? filter.getName() : null, filter != null ? filter.getParentId() : null);
