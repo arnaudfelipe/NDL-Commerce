@@ -63,7 +63,6 @@ public class BrandController {
   @DeleteMapping("{id}")
   @PreAuthorize("hasAnyRole('ADMIN')")
   public ResponseEntity<?> delete(@PathVariable("id") String brandId) {
-
     var result = brandInputBoundary.deleteBrand(UUID.fromString(brandId));
     return ResponseEntity.ok().body(result);
   }
