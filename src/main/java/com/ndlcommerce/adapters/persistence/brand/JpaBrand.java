@@ -78,9 +78,8 @@ public class JpaBrand implements BrandRegisterDsGateway {
     BrandDataMapper brandDataMapper = optional.get();
     UserDataMapper userLogado = securityFilter.obterUsuarioLogado();
 
-    if (dbRequestDTO.getName() != null && !dbRequestDTO.getName().isBlank()) {
-      brandDataMapper.setName(dbRequestDTO.getName());
-    }
+    brandDataMapper.setName(
+        dbRequestDTO.getName().isEmpty() ? brandDataMapper.getName() : dbRequestDTO.getName());
     brandDataMapper.setUpdatedBy(userLogado.getId());
 
     return repository.save(brandDataMapper);
