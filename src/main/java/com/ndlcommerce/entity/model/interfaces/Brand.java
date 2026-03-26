@@ -2,7 +2,7 @@ package com.ndlcommerce.entity.model.interfaces;
 
 public interface Brand {
 
-    String getName();
+  String getName();
 
-    boolean nameIsValid();
+  boolean nameIsValid();
 }
