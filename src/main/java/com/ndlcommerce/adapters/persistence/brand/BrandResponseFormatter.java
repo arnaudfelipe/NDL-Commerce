@@ -44,13 +44,15 @@ public class BrandResponseFormatter implements BrandPresenter {
   }
 
   @Override
-  public PaginatedResult<BrandResponseDTO> prepareListSuccessView(PaginatedResult<BrandResponseDTO> list) {
+  public PaginatedResult<BrandResponseDTO> prepareListSuccessView(
+      PaginatedResult<BrandResponseDTO> list) {
     if (list != null) {
       list.getContent()
           .forEach(
               brandResponseDTO -> {
                 LocalDateTime date = LocalDateTime.parse(brandResponseDTO.getCreatedAt());
-                brandResponseDTO.setCreatedAt(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+                brandResponseDTO.setCreatedAt(
+                    date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
               });
       return list;
     }
