@@ -50,12 +50,12 @@ public class BrandRegisterInteractor implements BrandInputBoundary {
   }
 
   @Override
-  public PaginatedResult<?> list(BrandRequestDTO filter, int page, int size) {
-    BrandDbRequestDTO request = new BrandDbRequestDTO(filter != null ? filter.name() : null);
+  public PaginatedResult<?> list(BrandRequestDTO request, int page, int size) {
+    BrandDbRequestDTO brandDbRequestDTO = new BrandDbRequestDTO(request != null ? request.name() : null);
 
-    PaginatedResult<BrandDataMapper> result = brandDsGateway.list(request, page, size);
+    PaginatedResult<BrandDataMapper> paginatedResult = brandDsGateway.list(brandDbRequestDTO, page, size);
 
-    PaginatedResult<BrandResponseDTO> response = result == null ? null : result.map(this::mapperToDTO);
+    PaginatedResult<BrandResponseDTO> response = paginatedResult == null ? null : paginatedResult.map(this::mapperToDTO);
 
     return brandPresenter.prepareListSuccessView(response);
   }
