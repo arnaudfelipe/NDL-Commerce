@@ -8,14 +8,14 @@ import com.ndlcommerce.useCase.request.brand.BrandResponseDTO;
 import java.util.UUID;
 
 public interface BrandInputBoundary {
-    BrandResponseDTO create(BrandRequestDTO requestDTO);
+  BrandResponseDTO create(BrandRequestDTO requestDTO);
 
-    PaginatedResult<?> list(BrandRequestDTO filter, int page, int size);
+  PaginatedResult<?> list(BrandRequestDTO filter, int page, int size);
 
-    BrandResponseDTO getById(UUID uuid);
+  BrandResponseDTO getById(UUID uuid);
 
-    BrandResponseDTO updateCategory(UUID uuid, BrandRequestDTO requestDTO);
+  BrandResponseDTO updateBrand(UUID uuid, BrandRequestDTO requestDTO);
 
-    Object deleteCategory(UUID categoryId);
+  Object deleteBrand(UUID brandId);
 
 }
