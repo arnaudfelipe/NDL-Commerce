@@ -1,0 +1,55 @@
+package com.ndlcommerce.adapters.persistence.brand;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.UUID;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
+@Table(name = "brand", schema = "ecommerce")
+public class BrandDataMapper {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  @EqualsAndHashCode.Include
+  private UUID id;
+
+  @Column(nullable = false, length = 150)
+  private String name;
+
+  @Column(nullable = false)
+  private Boolean active = true;
+
+  @Column(name = "created_by")
+  private UUID createdBy;
+
+  @CreationTimestamp
+  @Column(name = "created_at", updatable = false)
+  private LocalDateTime createdAt;
+
+  @Column(name = "updated_by")
+  private UUID updatedBy;
+
+  @UpdateTimestamp
+  @Column(name = "updated_at")
+  private LocalDateTime updatedAt;
+
+  public BrandDataMapper(String name, UUID createdBy) {
+    this.name = name;
+    this.createdBy = createdBy;
+    this.active = true;
+  }
+
+  public BrandDataMapper(String name) {
+    this.name = name;
+    this.active = true;
+  }
+}
