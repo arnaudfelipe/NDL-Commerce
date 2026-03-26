@@ -56,14 +56,15 @@ public class BrandController {
   @PreAuthorize("hasAnyRole('ADMIN')")
   public ResponseEntity<?> update(
       @PathVariable("id") String brandId, @RequestBody BrandRequestDTO requestModel) {
-    var result = brandInputBoundary.update(UUID.fromString(brandId), requestModel);
+    var result = brandInputBoundary.updateBrand(UUID.fromString(brandId), requestModel);
     return ResponseEntity.ok().body(result);
   }
 
   @DeleteMapping("{id}")
   @PreAuthorize("hasAnyRole('ADMIN')")
   public ResponseEntity<?> delete(@PathVariable("id") String brandId) {
-    var result = brandInputBoundary.delete(UUID.fromString(brandId));
+
+    var result = brandInputBoundary.deleteBrand(UUID.fromString(brandId));
     return ResponseEntity.ok().body(result);
   }
 }

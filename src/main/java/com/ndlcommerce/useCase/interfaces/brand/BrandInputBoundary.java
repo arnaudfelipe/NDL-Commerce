@@ -14,7 +14,7 @@ public interface BrandInputBoundary {
 
     BrandResponseDTO getById(UUID uuid);
 
-    BrandResponseDTO updateCategory(UUID uuid, BrandRequestDTO requestDTO);
+    BrandResponseDTO updateBrand(UUID uuid, BrandRequestDTO requestDTO);
 
-    Object deleteCategory(UUID categoryId);
+    Object deleteBrand(UUID brandId);
 }
