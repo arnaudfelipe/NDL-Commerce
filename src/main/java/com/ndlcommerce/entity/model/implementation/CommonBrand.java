@@ -14,6 +14,6 @@ public record CommonBrand(String name) implements Brand {
     return this.name != null
         && !this.name.isBlank()
         && this.name.length() >= 3
-        && this.name.length() < 50;
+        && this.name.length() <= 50;
   }
 }
