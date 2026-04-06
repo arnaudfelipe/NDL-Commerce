@@ -68,8 +68,8 @@ public class JpaBrand implements BrandRegisterDsGateway {
   }
 
   @Override
-  public BrandDataMapper update(UUID uuid, BrandDbRequestDTO dbRequestDTO) {
-    Optional<BrandDataMapper> optional = repository.findByIdAndActiveTrue(uuid);
+  public BrandDataMapper update(UUID brandId, BrandDbRequestDTO dbRequestDTO) {
+    Optional<BrandDataMapper> optional = repository.findByIdAndActiveTrue(brandId);
 
     if (optional.isEmpty()) {
       return null;
@@ -88,7 +88,6 @@ public class JpaBrand implements BrandRegisterDsGateway {
   @Override
   public void delete(UUID brandId) {
     Optional<BrandDataMapper> optional = repository.findByIdAndActiveTrue(brandId);
-
     if (optional.isEmpty()) {
       return;
     }

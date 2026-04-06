@@ -18,7 +18,7 @@ public interface BrandRegisterDsGateway {
 
   boolean existsByNameAndNotId(String name, UUID brandId);
 
-  BrandDataMapper update(UUID uuid, BrandDbRequestDTO dbRequestDTO);
+  BrandDataMapper update(UUID brandId, BrandDbRequestDTO dbRequestDTO);
 
   void delete(UUID brandId);
 }
