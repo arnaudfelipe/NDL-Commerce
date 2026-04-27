@@ -94,7 +94,7 @@ public class GlobalExceptionHandler {
   public ErrorResponseDTO handleNoSuchElementException(NoSuchElementException e) {
     System.err.println(e.getMessage());
     return ErrorResponseDTO.notFound(
-        e.getMessage().isEmpty() ? "Elemento com id fornecido não encontrado" : e.getMessage());
+        e.getMessage() == null ? "Elemento com id fornecido não encontrado" : e.getMessage());
   }
 
   @ResponseStatus(HttpStatus.FORBIDDEN)
