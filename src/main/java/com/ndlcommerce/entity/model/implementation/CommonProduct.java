@@ -34,6 +34,6 @@ public class CommonProduct implements Product {
   public boolean descriptionIsValid() {
     return this.description != null
         && this.description.length() > 5
-        && this.description.length() <= 200;
+        && this.description.length() <= 500;
   }
 }
