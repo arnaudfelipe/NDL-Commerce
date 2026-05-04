@@ -3,6 +3,8 @@ package com.ndlcommerce.adapters.persistence.product;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -25,6 +27,7 @@ public class ProductDataMapper {
   @Column(nullable = false, length = 255)
   private String name;
 
+  @NotNull
   @Column(columnDefinition = "TEXT")
   private String description;
 
@@ -38,19 +41,27 @@ public class ProductDataMapper {
   @Column(name = "updated_by")
   private UUID updatedBy;
 
-    @Column(name = "brand_id")
-    private UUID brandId;
+  @NotNull
+  @Column(name = "brand_id")
+  private UUID brandId;
 
-    @Column(name = "category_id")
-    private UUID categoryId;
+  @NotNull
+  @Column(name = "category_id")
+  private UUID categoryId;
 
   @UpdateTimestamp
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
-  public ProductDataMapper(String name, String description, UUID createdBy) {
+  @Column(name = "active")
+  private Boolean active;
+
+  public ProductDataMapper(String name, String description, UUID brandId, UUID categoryId, UUID createdBy) {
     this.name = name;
     this.description = description;
+    this.brandId = brandId;
+    this.categoryId = categoryId;
     this.createdBy = createdBy;
+    this.active = true;
   }
 }

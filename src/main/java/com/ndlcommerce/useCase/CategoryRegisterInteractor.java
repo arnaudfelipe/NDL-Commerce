@@ -8,7 +8,6 @@ import com.ndlcommerce.useCase.interfaces.category.CategoryInputBoundary;
 import com.ndlcommerce.useCase.interfaces.category.CategoryPresenter;
 import com.ndlcommerce.useCase.interfaces.category.CategoryRegisterDsGateway;
 import com.ndlcommerce.useCase.request.category.CategoryDbRequestDTO;
-import com.ndlcommerce.useCase.request.category.CategoryFilterDTO;
 import com.ndlcommerce.useCase.request.category.CategoryRequestDTO;
 import com.ndlcommerce.useCase.request.category.CategoryResponseDTO;
 import java.util.Optional;
@@ -60,7 +59,7 @@ public class CategoryRegisterInteractor implements CategoryInputBoundary {
   }
 
   @Override
-  public PaginatedResult<?> list(CategoryFilterDTO filter, int page, int size) {
+  public PaginatedResult<CategoryResponseDTO> list(CategoryRequestDTO filter, int page, int size) {
     CategoryDbRequestDTO request =
         new CategoryDbRequestDTO(
             filter != null ? filter.getName() : null, filter != null ? filter.getParentId() : null);
