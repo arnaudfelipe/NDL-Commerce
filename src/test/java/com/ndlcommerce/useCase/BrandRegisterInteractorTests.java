@@ -80,7 +80,7 @@ public class BrandRegisterInteractorTests {
 
     when(brandDsGateway.getById(id)).thenReturn(Optional.empty());
 
-    interactor.update(id, requestDTO);
+    interactor.updateBrand(id, requestDTO);
 
     verify(brandPresenter, times(1)).prepareFailView("NotFound");
     verify(brandDsGateway, never()).update(any(UUID.class), any(BrandDbRequestDTO.class));
@@ -113,7 +113,7 @@ public class BrandRegisterInteractorTests {
 
     when(brandDsGateway.getById(id)).thenReturn(Optional.of(mapper));
 
-    interactor.delete(id);
+    interactor.deleteBrand(id);
 
     verify(brandDsGateway, times(1)).delete(id);
     verify(brandPresenter, times(1)).prepareSuccessView(null);

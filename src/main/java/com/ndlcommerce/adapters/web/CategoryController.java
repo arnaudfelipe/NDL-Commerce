@@ -1,7 +1,6 @@
 package com.ndlcommerce.adapters.web;
 
 import com.ndlcommerce.useCase.interfaces.category.CategoryInputBoundary;
-import com.ndlcommerce.useCase.request.category.CategoryFilterDTO;
 import com.ndlcommerce.useCase.request.category.CategoryRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -42,7 +41,7 @@ public class CategoryController {
   @GetMapping
   @Operation(summary = "Listar", description = "End-point para listar todas as Categorias")
   public ResponseEntity<?> listCategories(
-      @RequestBody(required = false) CategoryFilterDTO filter,
+      @RequestBody(required = false) CategoryRequestDTO filter,
       @RequestParam(name = "page", defaultValue = "0") int page,
       @RequestParam(name = "size", defaultValue = "10") int size) {
     var result = categoryInputBoundary.list(filter, page, size);

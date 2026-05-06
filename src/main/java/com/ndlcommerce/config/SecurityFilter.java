@@ -1,5 +1,6 @@
 package com.ndlcommerce.config;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.ndlcommerce.adapters.persistence.user.JpaUserRepository;
 import com.ndlcommerce.adapters.persistence.user.UserDataMapper;
 import jakarta.servlet.FilterChain;
@@ -30,16 +31,35 @@ public class SecurityFilter extends OncePerRequestFilter {
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
     var token = this.recoverToken(request);
-    if (token != null) {
-      String login = tokenService.validateToken(token);
-      if (login != null) {
-        var user = userRepository.findByLoginAndEnabledIsTrue(login);
-        var authentication =
-            new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+    try {
+      if (token != null) {
+        String login = tokenService.validateToken(token);
+        if (login != null) {
+          var user = userRepository.findByLoginAndEnabledIsTrue(login);
+          var authentication =
+              new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+          SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
       }
+      filterChain.doFilter(request, response);
+    } catch (JWTVerificationException e) {
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      response.setContentType("application/json");
+      response.setCharacterEncoding("UTF-8");
+
+      response
+          .getWriter()
+          .write(
+              """
+        {
+          "status": 401,
+          "message": "%s"
+        }
+    """
+                  .formatted(e.getMessage()));
+
+      return;
     }
-    filterChain.doFilter(request, response);
   }
 
   private String recoverToken(HttpServletRequest request) {

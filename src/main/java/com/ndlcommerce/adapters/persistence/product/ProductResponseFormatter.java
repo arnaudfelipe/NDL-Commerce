@@ -1,13 +1,14 @@
 package com.ndlcommerce.adapters.persistence.product;
 
+import com.ndlcommerce.config.PaginatedResult;
 import com.ndlcommerce.config.exception.BusinessException;
 import com.ndlcommerce.config.exception.EntityAlreadyExistsException;
 import com.ndlcommerce.useCase.interfaces.product.ProductPresenter;
 import com.ndlcommerce.useCase.request.product.ProductResponseDTO;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class ProductResponseFormatter implements ProductPresenter {
 
@@ -18,15 +19,24 @@ public class ProductResponseFormatter implements ProductPresenter {
               "Nome do produto não é válido, Nome deve ter no mínimo 3 e no max 200 letras"),
           "DescriptionNotValid",
           new BusinessException(
-              "o Descrição não é válida, Descrição deve ter no mínimo 5 e no max 200 letras"),
+              "o Descrição não é válida, Descrição deve ter no mínimo 5 e no max 500 letras"),
           "ExistByName",
-          new EntityAlreadyExistsException("Produto Já cadastrado"));
+          new EntityAlreadyExistsException("Produto Já cadastrado"),
+          "BrandNotFound",
+          new NoSuchElementException("UUID da Marca fornecida não foi encontrado"),
+          "CategoryNotFound",
+          new NoSuchElementException("UUID da Categoria fornecida não foi encontrado"),
+          "NotFound",
+          new NoSuchElementException());
 
   @Override
   public ProductResponseDTO prepareSuccessView(ProductResponseDTO product) {
-    LocalDateTime date = LocalDateTime.parse(product.getCreatedAt());
-    product.setCreatedAt(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
-    return product;
+    if (product != null) {
+      LocalDateTime date = LocalDateTime.parse(product.getCreatedAt());
+      product.setCreatedAt(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+      return product;
+    }
+    return null;
   }
 
   @Override
@@ -40,7 +50,19 @@ public class ProductResponseFormatter implements ProductPresenter {
   }
 
   @Override
-  public List<ProductResponseDTO> prepareListSuccessView(List<ProductResponseDTO> list) {
-    return list;
+  public PaginatedResult<ProductResponseDTO> prepareListSuccessView(
+      PaginatedResult<ProductResponseDTO> list) {
+    if (list != null) {
+      list.getContent()
+          .forEach(
+              productResponseDTO -> {
+                LocalDateTime date = LocalDateTime.parse(productResponseDTO.getCreatedAt());
+
+                productResponseDTO.setCreatedAt(
+                    date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+              });
+      return list;
+    }
+    return new PaginatedResult<>(null, 0, 0, 0, 0, false, false);
   }
 }

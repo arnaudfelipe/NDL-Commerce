@@ -1,3 +1,13 @@
 package com.ndlcommerce.useCase.request.product;
 
-public class ProductFilterDTO {}
+import java.util.UUID;
+import lombok.Data;
+
+@Data
+public class ProductFilterDTO {
+
+  private String name;
+  private String description;
+  private UUID brand;
+  private UUID category;
+}

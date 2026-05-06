@@ -77,7 +77,7 @@ public class BrandRegisterInteractor implements BrandInputBoundary {
   }
 
   @Override
-  public BrandResponseDTO update(UUID uuid, BrandRequestDTO requestDTO) {
+  public BrandResponseDTO updateBrand(UUID uuid, BrandRequestDTO requestDTO) {
     Optional<BrandDataMapper> optional = brandDsGateway.getById(uuid);
 
     if (optional.isEmpty()) {
@@ -101,7 +101,7 @@ public class BrandRegisterInteractor implements BrandInputBoundary {
   }
 
   @Override
-  public Object delete(UUID brandId) {
+  public BrandResponseDTO deleteBrand(UUID brandId) {
     Optional<BrandDataMapper> optional = brandDsGateway.getById(brandId);
 
     if (optional.isEmpty()) {

@@ -12,7 +12,7 @@ public interface BrandInputBoundary {
 
   BrandResponseDTO getById(UUID uuid);
 
-  BrandResponseDTO update(UUID uuid, BrandRequestDTO requestDTO);
+  BrandResponseDTO updateBrand(UUID uuid, BrandRequestDTO requestDTO);
 
-  Object delete(UUID categoryId);
+  BrandResponseDTO deleteBrand(UUID brandId);
 }
