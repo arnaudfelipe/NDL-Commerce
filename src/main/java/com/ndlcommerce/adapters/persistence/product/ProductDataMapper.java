@@ -1,10 +1,9 @@
 package com.ndlcommerce.adapters.persistence.product;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -56,7 +55,8 @@ public class ProductDataMapper {
   @Column(name = "active")
   private Boolean active;
 
-  public ProductDataMapper(String name, String description, UUID brandId, UUID categoryId, UUID createdBy) {
+  public ProductDataMapper(
+      String name, String description, UUID brandId, UUID categoryId, UUID createdBy) {
     this.name = name;
     this.description = description;
     this.brandId = brandId;

@@ -3,10 +3,7 @@ package com.ndlcommerce.useCase.interfaces.product;
 import com.ndlcommerce.adapters.persistence.product.ProductDataMapper;
 import com.ndlcommerce.config.PaginatedResult;
 import com.ndlcommerce.useCase.request.product.ProductDbRequestDTO;
-import com.ndlcommerce.useCase.request.product.ProductRequestDTO;
 import com.ndlcommerce.useCase.request.product.ProductUpdateRequestDTO;
-
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,7 +11,8 @@ public interface ProductRegisterDsGateway {
 
   boolean existsByName(String name);
 
-  PaginatedResult<ProductDataMapper> list(ProductDbRequestDTO requestDTO, Integer page, Integer size);
+  PaginatedResult<ProductDataMapper> list(
+      ProductDbRequestDTO requestDTO, Integer page, Integer size);
 
   ProductDataMapper save(ProductDbRequestDTO requestDTO);
 

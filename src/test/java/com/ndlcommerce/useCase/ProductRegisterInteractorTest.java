@@ -64,7 +64,8 @@ class ProductRegisterInteractorTest {
   void givenExistingProductId_whenGetById_thenReturnMappedProductResponse() {
     UUID productId = UUID.randomUUID();
     LocalDateTime createdAt = LocalDateTime.of(2026, 5, 4, 20, 30, 0);
-    ProductDataMapper product = productDataMapper(productId, "Notebook Pro", "16GB RAM SSD", createdAt);
+    ProductDataMapper product =
+        productDataMapper(productId, "Notebook Pro", "16GB RAM SSD", createdAt);
 
     when(productDsGateway.findById(productId)).thenReturn(Optional.of(product));
     when(productPresenter.prepareSuccessView(any(ProductResponseDTO.class)))
@@ -101,7 +102,8 @@ class ProductRegisterInteractorTest {
 
     assertThat(response).isSameAs(failResponse);
     verify(productPresenter).prepareFailView("BrandNotFound");
-    verify(productDsGateway, never()).update(any(ProductDataMapper.class), any(ProductUpdateRequestDTO.class));
+    verify(productDsGateway, never())
+        .update(any(ProductDataMapper.class), any(ProductUpdateRequestDTO.class));
   }
 
   @Test
@@ -165,17 +167,14 @@ class ProductRegisterInteractorTest {
   }
 
   @Test
-  void givenUnknownBrandOnCreate_thenPrepareBrandNotFoundFailView(){
+  void givenUnknownBrandOnCreate_thenPrepareBrandNotFoundFailView() {
     UUID brandId = UUID.randomUUID();
 
-    ProductRequestDTO requestDTO = new ProductRequestDTO("teste",
-            "teste",
-            brandId,
-            null);
+    ProductRequestDTO requestDTO = new ProductRequestDTO("teste", "teste", brandId, null);
     ProductResponseDTO failResponseDTO = new ProductResponseDTO();
 
     when(brandRegisterDsGateway.getById(brandId)).thenReturn(Optional.empty());
-      when(productPresenter.prepareFailView("BrandNotFound")).thenReturn((failResponseDTO));
+    when(productPresenter.prepareFailView("BrandNotFound")).thenReturn((failResponseDTO));
 
     ProductResponseDTO response = interactor.create(requestDTO);
 

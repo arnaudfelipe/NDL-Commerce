@@ -1,17 +1,13 @@
 package com.ndlcommerce.adapters.persistence.product;
 
-import com.ndlcommerce.adapters.persistence.category.CategoryDataMapper;
 import com.ndlcommerce.adapters.persistence.user.UserDataMapper;
 import com.ndlcommerce.config.PaginatedResult;
 import com.ndlcommerce.config.SecurityFilter;
 import com.ndlcommerce.useCase.interfaces.product.ProductRegisterDsGateway;
 import com.ndlcommerce.useCase.request.product.ProductDbRequestDTO;
-import java.util.List;
+import com.ndlcommerce.useCase.request.product.ProductUpdateRequestDTO;
 import java.util.Optional;
 import java.util.UUID;
-
-import com.ndlcommerce.useCase.request.product.ProductRequestDTO;
-import com.ndlcommerce.useCase.request.product.ProductUpdateRequestDTO;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
 
@@ -32,23 +28,23 @@ public class JpaProduct implements ProductRegisterDsGateway {
   }
 
   @Override
-  public PaginatedResult<ProductDataMapper> list(ProductDbRequestDTO requestDTO, Integer page, Integer size) {
+  public PaginatedResult<ProductDataMapper> list(
+      ProductDbRequestDTO requestDTO, Integer page, Integer size) {
 
-    ProductDataMapper dataMapper = new ProductDataMapper(
+    ProductDataMapper dataMapper =
+        new ProductDataMapper(
             requestDTO.getName(),
             requestDTO.getDescription(),
             requestDTO.getBrand(),
             requestDTO.getCategory(),
-            null
-    );
+            null);
 
     ExampleMatcher matcher =
-            ExampleMatcher.matching()
-                    .withIgnoreCase()
-                    .withIgnoreNullValues()
-                    .withIgnorePaths("id", "createdBy", "createdAt", "updatedBy", "updatedAt")
-                    .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-
+        ExampleMatcher.matching()
+            .withIgnoreCase()
+            .withIgnoreNullValues()
+            .withIgnorePaths("id", "createdBy", "createdAt", "updatedBy", "updatedAt")
+            .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
     Example<ProductDataMapper> example = Example.of(dataMapper, matcher);
 
@@ -57,19 +53,17 @@ public class JpaProduct implements ProductRegisterDsGateway {
     Page<ProductDataMapper> categoryDataMapperPage = repository.findAll(example, pageable);
 
     PaginatedResult<ProductDataMapper> resultCategoryDataMapper =
-            new PaginatedResult<>(
-                    categoryDataMapperPage.getContent(),
-                    categoryDataMapperPage.getNumber(),
-                    categoryDataMapperPage.getSize(),
-                    categoryDataMapperPage.getTotalElements(),
-                    categoryDataMapperPage.getTotalPages(),
-                    categoryDataMapperPage.isFirst(),
-                    categoryDataMapperPage.isLast());
+        new PaginatedResult<>(
+            categoryDataMapperPage.getContent(),
+            categoryDataMapperPage.getNumber(),
+            categoryDataMapperPage.getSize(),
+            categoryDataMapperPage.getTotalElements(),
+            categoryDataMapperPage.getTotalPages(),
+            categoryDataMapperPage.isFirst(),
+            categoryDataMapperPage.isLast());
 
     return resultCategoryDataMapper;
-
   }
-
 
   @Override
   public ProductDataMapper save(ProductDbRequestDTO requestDTO) {
@@ -79,10 +73,10 @@ public class JpaProduct implements ProductRegisterDsGateway {
     ProductDataMapper entity =
         new ProductDataMapper(
             requestDTO.getName(),
-                requestDTO.getDescription(),
-                requestDTO.getBrand(),
-                requestDTO.getCategory(),
-                userLogado.getId());
+            requestDTO.getDescription(),
+            requestDTO.getBrand(),
+            requestDTO.getCategory(),
+            userLogado.getId());
 
     return repository.save(entity);
   }
@@ -98,12 +92,21 @@ public class JpaProduct implements ProductRegisterDsGateway {
   }
 
   @Override
-  public ProductDataMapper update(ProductDataMapper productDataMapper, ProductUpdateRequestDTO requestDTO) {
+  public ProductDataMapper update(
+      ProductDataMapper productDataMapper, ProductUpdateRequestDTO requestDTO) {
 
-    productDataMapper.setName(requestDTO.getName() == null ? productDataMapper.getName() : requestDTO.getName());
-    productDataMapper.setDescription(requestDTO.getDescription() == null ? productDataMapper.getDescription() : requestDTO.getDescription());
-    productDataMapper.setBrandId(requestDTO.getBrand() == null ? productDataMapper.getBrandId() : requestDTO.getBrand());
-    productDataMapper.setCategoryId(requestDTO.getCategory() == null ? productDataMapper.getCategoryId() : requestDTO.getCategory());
+    productDataMapper.setName(
+        requestDTO.getName() == null ? productDataMapper.getName() : requestDTO.getName());
+    productDataMapper.setDescription(
+        requestDTO.getDescription() == null
+            ? productDataMapper.getDescription()
+            : requestDTO.getDescription());
+    productDataMapper.setBrandId(
+        requestDTO.getBrand() == null ? productDataMapper.getBrandId() : requestDTO.getBrand());
+    productDataMapper.setCategoryId(
+        requestDTO.getCategory() == null
+            ? productDataMapper.getCategoryId()
+            : requestDTO.getCategory());
     return repository.save(productDataMapper);
   }
 
@@ -113,5 +116,4 @@ public class JpaProduct implements ProductRegisterDsGateway {
     ProductDataMapper.setActive(false);
     repository.save(ProductDataMapper);
   }
-
 }

@@ -4,11 +4,9 @@ import com.ndlcommerce.config.PaginatedResult;
 import com.ndlcommerce.config.exception.BusinessException;
 import com.ndlcommerce.config.exception.EntityAlreadyExistsException;
 import com.ndlcommerce.useCase.interfaces.product.ProductPresenter;
-import com.ndlcommerce.useCase.request.category.CategoryResponseDTO;
 import com.ndlcommerce.useCase.request.product.ProductResponseDTO;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -33,12 +31,12 @@ public class ProductResponseFormatter implements ProductPresenter {
 
   @Override
   public ProductResponseDTO prepareSuccessView(ProductResponseDTO product) {
-      if (product != null) {
-          LocalDateTime date = LocalDateTime.parse(product.getCreatedAt());
-          product.setCreatedAt(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
-          return product;
-      }
-      return null;
+    if (product != null) {
+      LocalDateTime date = LocalDateTime.parse(product.getCreatedAt());
+      product.setCreatedAt(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+      return product;
+    }
+    return null;
   }
 
   @Override
@@ -52,16 +50,17 @@ public class ProductResponseFormatter implements ProductPresenter {
   }
 
   @Override
-  public PaginatedResult<ProductResponseDTO> prepareListSuccessView(PaginatedResult<ProductResponseDTO> list) {
+  public PaginatedResult<ProductResponseDTO> prepareListSuccessView(
+      PaginatedResult<ProductResponseDTO> list) {
     if (list != null) {
       list.getContent()
-              .forEach(
-                      productResponseDTO -> {
-                        LocalDateTime date = LocalDateTime.parse(productResponseDTO.getCreatedAt());
+          .forEach(
+              productResponseDTO -> {
+                LocalDateTime date = LocalDateTime.parse(productResponseDTO.getCreatedAt());
 
-                        productResponseDTO.setCreatedAt(
-                                date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
-                      });
+                productResponseDTO.setCreatedAt(
+                    date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+              });
       return list;
     }
     return new PaginatedResult<>(null, 0, 0, 0, 0, false, false);

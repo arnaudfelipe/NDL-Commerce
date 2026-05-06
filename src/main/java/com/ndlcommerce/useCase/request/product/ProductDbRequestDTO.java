@@ -12,7 +12,8 @@ public class ProductDbRequestDTO {
   @Getter private UUID category;
   @Getter private boolean active;
 
-  public ProductDbRequestDTO(String name, String description, UUID brand,UUID category, boolean active) {
+  public ProductDbRequestDTO(
+      String name, String description, UUID brand, UUID category, boolean active) {
     this.name = name;
     this.description = description;
     this.brand = brand;

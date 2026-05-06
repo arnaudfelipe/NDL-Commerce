@@ -5,7 +5,6 @@ import com.ndlcommerce.useCase.request.product.ProductFilterDTO;
 import com.ndlcommerce.useCase.request.product.ProductRequestDTO;
 import com.ndlcommerce.useCase.request.product.ProductResponseDTO;
 import com.ndlcommerce.useCase.request.product.ProductUpdateRequestDTO;
-
 import java.util.UUID;
 
 public interface ProductInputBoundary {

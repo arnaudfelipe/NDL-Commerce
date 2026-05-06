@@ -10,7 +10,6 @@ import com.ndlcommerce.useCase.interfaces.product.ProductInputBoundary;
 import com.ndlcommerce.useCase.interfaces.product.ProductPresenter;
 import com.ndlcommerce.useCase.interfaces.product.ProductRegisterDsGateway;
 import com.ndlcommerce.useCase.request.product.*;
-
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,15 +22,16 @@ public class ProductRegisterInteractor implements ProductInputBoundary {
   private final CategoryRegisterDsGateway categoryRegisterDsGateway;
 
   public ProductRegisterInteractor(
-          ProductRegisterDsGateway productDsGateway,
-          ProductPresenter productPresenter,
-          ProductFactory productFactory,
-          BrandRegisterDsGateway brandRegisterDsGateway, CategoryRegisterDsGateway categoryRegisterDsGateway) {
+      ProductRegisterDsGateway productDsGateway,
+      ProductPresenter productPresenter,
+      ProductFactory productFactory,
+      BrandRegisterDsGateway brandRegisterDsGateway,
+      CategoryRegisterDsGateway categoryRegisterDsGateway) {
     this.productDsGateway = productDsGateway;
     this.productPresenter = productPresenter;
     this.productFactory = productFactory;
     this.brandRegisterDsGateway = brandRegisterDsGateway;
-      this.categoryRegisterDsGateway = categoryRegisterDsGateway;
+    this.categoryRegisterDsGateway = categoryRegisterDsGateway;
   }
 
   @Override
@@ -73,36 +73,43 @@ public class ProductRegisterInteractor implements ProductInputBoundary {
   @Override
   public PaginatedResult<ProductResponseDTO> list(ProductFilterDTO filter, int page, int size) {
     ProductDbRequestDTO productDbRequestDTO =
-        new ProductDbRequestDTO(filter.getName(), filter.getDescription(),
-                filter.getBrand(),
-                filter.getCategory(),
-                true);
+        new ProductDbRequestDTO(
+            filter.getName(),
+            filter.getDescription(),
+            filter.getBrand(),
+            filter.getCategory(),
+            true);
 
     PaginatedResult<ProductDataMapper> productDataMapperList =
         productDsGateway.list(productDbRequestDTO, page, size);
 
-
     PaginatedResult<ProductResponseDTO> paginatedResultProductResponseDTO =
-            productDataMapperList == null ? null : productDataMapperList.map(this::mapperToDTO);
+        productDataMapperList == null ? null : productDataMapperList.map(this::mapperToDTO);
 
     return productPresenter.prepareListSuccessView(paginatedResultProductResponseDTO);
   }
 
   private ProductResponseDTO mapperToDTO(ProductDataMapper productDataMapper) {
-    return new ProductResponseDTO(productDataMapper.getId(), productDataMapper.getName(),
-            productDataMapper.getDescription(), productDataMapper.getCreatedAt().toString());
+    return new ProductResponseDTO(
+        productDataMapper.getId(),
+        productDataMapper.getName(),
+        productDataMapper.getDescription(),
+        productDataMapper.getCreatedAt().toString());
   }
 
   @Override
   public ProductResponseDTO getById(UUID productId) {
     Optional<ProductDataMapper> optional = productDsGateway.findById(productId);
-    if (optional.isEmpty()){
+    if (optional.isEmpty()) {
       return productPresenter.prepareFailView("NotFound");
     }
     ProductDataMapper productDataMapper = optional.get();
     ProductResponseDTO response =
-            new ProductResponseDTO(
-                    productDataMapper.getId(), productDataMapper.getName(), productDataMapper.getDescription(), productDataMapper.getCreatedAt().toString());
+        new ProductResponseDTO(
+            productDataMapper.getId(),
+            productDataMapper.getName(),
+            productDataMapper.getDescription(),
+            productDataMapper.getCreatedAt().toString());
 
     return productPresenter.prepareSuccessView(response);
   }
@@ -111,15 +118,17 @@ public class ProductRegisterInteractor implements ProductInputBoundary {
   public ProductResponseDTO updateProduct(UUID productId, ProductUpdateRequestDTO requestDTO) {
     Optional<ProductDataMapper> optional = productDsGateway.findById(productId);
 
-    if (optional.isEmpty()){
+    if (optional.isEmpty()) {
       return productPresenter.prepareFailView("NotFound");
     }
 
-    if (requestDTO.getBrand() != null && brandRegisterDsGateway.getById(requestDTO.getBrand()).isEmpty()) {
+    if (requestDTO.getBrand() != null
+        && brandRegisterDsGateway.getById(requestDTO.getBrand()).isEmpty()) {
       return productPresenter.prepareFailView("BrandNotFound");
     }
 
-    if (requestDTO.getCategory() != null && categoryRegisterDsGateway.getById(requestDTO.getCategory()).isEmpty()) {
+    if (requestDTO.getCategory() != null
+        && categoryRegisterDsGateway.getById(requestDTO.getCategory()).isEmpty()) {
       return productPresenter.prepareFailView("CategoryNotFound");
     }
 
@@ -135,8 +144,11 @@ public class ProductRegisterInteractor implements ProductInputBoundary {
 
     ProductDataMapper productDataMapper = productDsGateway.update(optional.get(), requestDTO);
     ProductResponseDTO response =
-            new ProductResponseDTO(
-                    productDataMapper.getId(), productDataMapper.getName(), productDataMapper.getDescription(), productDataMapper.getCreatedAt().toString());
+        new ProductResponseDTO(
+            productDataMapper.getId(),
+            productDataMapper.getName(),
+            productDataMapper.getDescription(),
+            productDataMapper.getCreatedAt().toString());
 
     return productPresenter.prepareSuccessView(response);
   }
@@ -145,7 +157,7 @@ public class ProductRegisterInteractor implements ProductInputBoundary {
   public ProductResponseDTO deleteProduct(UUID productId) {
     Optional<ProductDataMapper> optional = productDsGateway.findById(productId);
 
-    if (optional.isEmpty()){
+    if (optional.isEmpty()) {
       return productPresenter.prepareFailView("NotFound");
     }
 

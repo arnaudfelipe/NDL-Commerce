@@ -1,8 +1,7 @@
 package com.ndlcommerce.useCase.request.product;
 
-import lombok.Data;
-
 import java.util.UUID;
+import lombok.Data;
 
 @Data
 public class ProductFilterDTO {
